@@ -183,6 +183,11 @@
                 [style.width.%]="agent.progress"
               ></div>
             </div>
+
+            <div class="relative mt-2 flex items-center justify-between text-[11px] text-slate-500">
+              <span>{{ statusLabel(agent.status) }}</span>
+              <span>{{ agent.progress }}%</span>
+            </div>
           </article>
         </div>
       </section>
