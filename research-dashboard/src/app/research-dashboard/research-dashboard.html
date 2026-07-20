@@ -169,6 +169,20 @@
             </div>
 
             <p class="relative mt-3 line-clamp-1 text-xs text-slate-400">{{ agent.currentTask }}</p>
+
+            <!-- progress bar -->
+            <div class="relative mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-700/50">
+              <div
+                class="h-full rounded-full transition-all duration-500 ease-out"
+                [ngClass]="{
+                  'bg-slate-600': agent.status === 'idle',
+                  'bg-gradient-to-r from-emerald-500 to-emerald-400':
+                    agent.status === 'working' || agent.status === 'completed',
+                  'bg-rose-500': agent.status === 'failed',
+                }"
+                [style.width.%]="agent.progress"
+              ></div>
+            </div>
           </article>
         </div>
       </section>
