@@ -37,4 +37,10 @@
     background: rgba(139, 92, 246, 0.35);
     border-radius: 9999px;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .agent-glow-ring,
+    .agent-pulse-dot {
+      animation: none !important;
+    }
+  }
 </style>
