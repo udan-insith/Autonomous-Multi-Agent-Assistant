@@ -121,7 +121,12 @@
               'border-emerald-500/50 bg-emerald-500/[0.04]': agent.status === 'completed',
               'border-rose-500/50 bg-rose-500/[0.04]': agent.status === 'failed',
             }"
-          ></article>
+          >
+            <div
+              *ngIf="agent.status === 'working'"
+              class="agent-glow-ring pointer-events-none absolute -inset-8 opacity-40"
+            ></div>
+          </article>
         </div>
       </section>
     </main>
