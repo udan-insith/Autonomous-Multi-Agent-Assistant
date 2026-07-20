@@ -110,6 +110,19 @@
           <svg lucideNetwork class="h-3.5 w-3.5"></svg>
           Agent Swarm
         </h2>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article
+            *ngFor="let agent of project.agents; trackBy: trackAgent"
+            [@agentStateAnimation]="agent.status"
+            class="relative overflow-hidden rounded-2xl border bg-slate-800/60 p-4 backdrop-blur-sm transition-colors"
+            [ngClass]="{
+              'border-white/5': agent.status === 'idle',
+              'border-emerald-500/40': agent.status === 'working',
+              'border-emerald-500/50 bg-emerald-500/[0.04]': agent.status === 'completed',
+              'border-rose-500/50 bg-rose-500/[0.04]': agent.status === 'failed',
+            }"
+          ></article>
+        </div>
       </section>
     </main>
   </ng-container>
