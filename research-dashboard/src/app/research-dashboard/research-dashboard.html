@@ -44,3 +44,12 @@
     }
   }
 </style>
+
+<div
+  class="min-h-screen w-full bg-slate-900 text-slate-200 font-sans antialiased section:bg-emerald-500/30"
+  @panelEnter
+>
+  <ng-container *ngIf="project$ | async as project">
+    <!-- HEADER -->
+  </ng-container>
+</div>
