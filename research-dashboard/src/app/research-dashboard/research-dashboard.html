@@ -239,7 +239,28 @@
 
         <div
           class="h-[476px] overflow-y-auto rounded-2xl border border-white/5 bg-slate-800/40 p-6 terminal-scroll"
-        ></div>
+        >
+          <div *ngIf="synthesisBlocks.length === 0" class="text-sm text-slate-600">
+            Synthesis will appear here once the Synthesizer agent begins drafting…
+          </div>
+
+          <ng-container *ngFor="let block of synthesisBlocks; trackBy: trackBlock">
+            <h3
+              *ngIf="block.isHeading"
+              @chunkRevealAnimation
+              class="mb-2 mt-5 text-sm font-semibold uppercase tracking-wide text-emerald-400 first:mt-0"
+            >
+              {{ block.text }}
+            </h3>
+            <p
+              *ngIf="!block.isHeading"
+              @chunkRevealAnimation
+              class="mb-1 text-[13.5px] leading-relaxed text-slate-300"
+            >
+              {{ block.text }}
+            </p>
+          </ng-container>
+        </div>
       </section>
     </main>
   </ng-container>
