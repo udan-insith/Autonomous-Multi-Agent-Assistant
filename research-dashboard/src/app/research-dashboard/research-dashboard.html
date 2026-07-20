@@ -200,6 +200,32 @@
           <svg lucideRadio class="h-3.5 w-3.5 text-violet-400"></svg>
           Streaming Terminal
         </h2>
+        <div
+          class="rounded-2xl border border-violet-500/20 bg-slate-950/70 shadow-[0_0_40px_-15px_rgba(139,92,246,0.35)]"
+        >
+          <div class="flex items-center gap-1.5 border-b border-white/5 px-4 py-2.5">
+            <span class="h-2.5 w-2.5 rounded-full bg-rose-500/70"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-amber-400/70"></span>
+            <span class="h-2.5 w-2.5 rounded-full bg-emerald-500/70"></span>
+            <span class="ml-2 text-[11px] text-slate-500">agent_swarm.log</span>
+          </div>
+
+          <div
+            class="terminal-scroll h-[420px] overflow-y-auto px-4 py-3 font-mono text-[12.5px] leading-relaxed"
+          >
+            <div [@listAnimation]="project.logs.length">
+              <div *ngFor="let log of project.logs; trackBy: trackLog" class="flex gap-2 py-0.5">
+                <span class="shrink-0 text-slate-600">{{ log.timestamp | date: 'HH:mm:ss' }}</span>
+                <span class="shrink-0 font-semibold text-slate-400">[{{ log.agentName }}]</span>
+                <span [ngClass]="logLevelClasses(log.level)">{{ log.message }}</span>
+              </div>
+
+              <div *ngIf="project.logs.length === 0" class="text-slate-600">
+                Waiting for agent activity…
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   </ng-container>
