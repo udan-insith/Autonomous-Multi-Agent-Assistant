@@ -51,5 +51,54 @@
 >
   <ng-container *ngIf="project$ | async as project">
     <!-- HEADER -->
+    <header
+      class="panel-block sticky top-0 z-30 border-b border-white/5 bg-slate-900/80 backdrop-blur-md"
+    >
+      <div class="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div
+            class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 ring-1 ring-emerald-500/30"
+          >
+            <svg lucideNetwork class="h-5 w-5 text-emerald-400"></svg>
+          </div>
+          <div>
+            <h1 class="text-sm font-semibold tracking-wide text-slate-100">
+              Autonomous Research Swarm
+            </h1>
+            <p class="text-xs text-slate-500">{{ project.topic }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ring-1"
+            [ngClass]="{
+              'bg-emerald-500/10 text-emerald-400 ring-emerald-500/30':
+                project.status === 'running',
+              'bg-violet-500/10 text-violet-300 ring-violet-500/30': project.status === 'completed',
+              'bg-rose-500/10 text-rose-400 ring-rose-500/30': project.status === 'failed',
+            }"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-current agent-pulse-dot"></span>
+            {{
+              project.status === 'running'
+                ? 'Run in progress'
+                : project.status === 'completed'
+                  ? 'Run complete'
+                  : 'Run failed'
+            }}
+          </span>
+
+          <button
+            type="button"
+            (click)="restartRun()"
+            class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-white/10 hover:text-white"
+          >
+            <svg lucideRotateCcw class="h-3.5 w-3.5"></svg>
+            Restart run
+          </button>
+        </div>
+      </div>
+    </header>
   </ng-container>
 </div>
