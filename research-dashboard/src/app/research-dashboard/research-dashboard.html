@@ -279,7 +279,24 @@
 
         <div
           class="flex items-center justify-center rounded-2xl border border-white/5 bg-slate-950/50 p-4"
-        ></div>
+        >
+          <svg viewBox="0 0 480 480" class="h-[440px] w-full max-w-[560px]">
+            <!-- edges -->
+            <ng-container *ngFor="let edge of project.citationEdges; trackBy: trackEdge">
+              <line
+                *ngIf="edgePoints(edge, project.citationNodes) as pts"
+                @edgeDraw
+                [attr.x1]="pts.x1"
+                [attr.y1]="pts.y1"
+                [attr.x2]="pts.x2"
+                [attr.y2]="pts.y2"
+                stroke="rgba(139,92,246,0.45)"
+                stroke-width="1.5"
+                stroke-dasharray="4 3"
+              />
+            </ng-container>
+          </svg>
+        </div>
       </section>
     </main>
   </ng-container>
