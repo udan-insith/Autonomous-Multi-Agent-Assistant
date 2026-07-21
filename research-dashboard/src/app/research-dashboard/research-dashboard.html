@@ -118,8 +118,8 @@
             [ngClass]="{
               'border-white/5': agent.status === 'idle',
               'border-emerald-500/40': agent.status === 'working',
-              'border-emerald-500/50 bg-emerald-500/[0.04]': agent.status === 'completed',
-              'border-rose-500/50 bg-rose-500/[0.04]': agent.status === 'failed',
+              'border-emerald-500/50 bg-emerald-500/4': agent.status === 'completed',
+              'border-rose-500/50 bg-rose-500/4': agent.status === 'failed',
             }"
           >
             <div
@@ -176,7 +176,7 @@
                 class="h-full rounded-full transition-all duration-500 ease-out"
                 [ngClass]="{
                   'bg-slate-600': agent.status === 'idle',
-                  'bg-gradient-to-r from-emerald-500 to-emerald-400':
+                  'bg-linear-to-r from-emerald-500 to-emerald-400':
                     agent.status === 'working' || agent.status === 'completed',
                   'bg-rose-500': agent.status === 'failed',
                 }"
@@ -211,7 +211,7 @@
           </div>
 
           <div
-            class="terminal-scroll h-[420px] overflow-y-auto px-4 py-3 font-mono text-[12.5px] leading-relaxed"
+            class="terminal-scroll h-105 overflow-y-auto px-4 py-3 font-mono text-[12.5px] leading-relaxed"
           >
             <div [@listAnimation]="project.logs.length">
               <div *ngFor="let log of project.logs; trackBy: trackLog" class="flex gap-2 py-0.5">
@@ -238,7 +238,7 @@
         </h2>
 
         <div
-          class="h-[476px] overflow-y-auto rounded-2xl border border-white/5 bg-slate-800/40 p-6 terminal-scroll"
+          class="h-119 overflow-y-auto rounded-2xl border border-white/5 bg-slate-800/40 p-6 terminal-scroll"
         >
           <div *ngIf="synthesisBlocks.length === 0" class="text-sm text-slate-600">
             Synthesis will appear here once the Synthesizer agent begins drafting…
@@ -263,7 +263,7 @@
 
           <span
             *ngIf="project.status === 'running'"
-            class="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-emerald-400"
+            class="ml-0.5 inline-block h-4 w-0.5 translate-y-0.5 animate-pulse bg-emerald-400"
           ></span>
         </div>
       </section>
@@ -280,7 +280,7 @@
         <div
           class="flex items-center justify-center rounded-2xl border border-white/5 bg-slate-950/50 p-4"
         >
-          <svg viewBox="0 0 480 480" class="h-[440px] w-full max-w-[560px]">
+          <svg viewBox="0 0 480 480" class="h-110 w-full max-w-140">
             <!-- edges -->
             <ng-container *ngFor="let edge of project.citationEdges; trackBy: trackEdge">
               <line
