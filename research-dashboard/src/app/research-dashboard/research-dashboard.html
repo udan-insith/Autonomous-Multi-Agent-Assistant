@@ -307,6 +307,24 @@
             <text x="240" y="244" text-anchor="middle" class="fill-emerald-300" font-size="8">
               ROOT
             </text>
+
+            <!-- discovered nodes -->
+            <g
+              *ngFor="let node of project.citationNodes; trackBy: trackNode"
+              @nodeDiscover
+              [attr.transform]="'translate(' + nodePx(node).cx + ',' + nodePx(node).cy + ')'"
+            >
+              <circle
+                r="6"
+                [attr.r]="6 + node.weight / 6"
+                fill="rgba(139,92,246,0.2)"
+                stroke="#a78bfa"
+                stroke-width="1.5"
+              />
+              <text y="-12" text-anchor="middle" class="fill-slate-400" font-size="7">
+                {{ node.label }}
+              </text>
+            </g>
           </svg>
         </div>
       </section>
