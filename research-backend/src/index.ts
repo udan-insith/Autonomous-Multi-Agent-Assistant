@@ -1,7 +1,7 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import OpenAI from "openai";
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { GoogleGenAI } from '@google/genai';
 
 dotenv.config();
 
@@ -9,35 +9,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Groq exposes an OpenAI-compatible API, so we reuse the same SDK —
-// just point baseURL at Groq and use a Groq-hosted model.
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+app.get('/api/health', (_req, res) => {
+  res.json({ status: 'ok', time: Date.now() });
 });
 
-app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", time: Date.now() });
-});
-
-app.get("/api/test-completion", async (_req, res) => {
+app.get('/api/test-completion', async (_req, res) => {
   try {
-    const completion = await openai.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "user",
-          content: 'Reply with exactly: "Groq connection working."',
-        },
-      ],
-      max_tokens: 20,
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents: 'Reply with exactly: "Gemini connection working."',
     });
-    res.json({ reply: completion.choices[0]?.message?.content ?? "(empty)" });
+    res.json({ reply: response.text ?? '(empty)' });
   } catch (err) {
-    console.error("Groq error:", err);
-    res
-      .status(500)
-      .json({ error: err instanceof Error ? err.message : "Unknown error" });
+    console.error('Gemini error:', err);
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' });
   }
 });
 
