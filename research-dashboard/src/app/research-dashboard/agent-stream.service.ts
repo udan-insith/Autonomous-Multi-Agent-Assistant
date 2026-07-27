@@ -55,3 +55,5 @@ const AGENT_SEED: AgentState[] = [
     updatedAt: Date.now(),
   },
 ];
+
+const SYNTHESIS_SENTENCES;
