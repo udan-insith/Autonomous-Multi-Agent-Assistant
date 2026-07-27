@@ -54,3 +54,14 @@ export interface ResearchProject {
   citationNodes: CitationNode[];
   citationEdges: CitationEdge[];
 }
+
+export type AgentStreamEvent =
+  | {
+      type: 'agent-status';
+      payload: { agentId: AgentId; status: AgentStatus; progress: number; currentTask: string };
+    }
+  | { type: 'log'; payload: AgentLog }
+  | { type: 'synthesis-chunk'; payload: SynthesisChunk }
+  | { type: 'citation-node'; payload: CitationNode }
+  | { type: 'citation-edge'; payload: CitationEdge }
+  | { type: 'run-complete'; payload: { completedAt: number } };
