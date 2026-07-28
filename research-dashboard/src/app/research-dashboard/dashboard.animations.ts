@@ -75,3 +75,13 @@ export const listAnimation = trigger('listAnimation', [
     ),
   ]),
 ]);
+
+export const chunkRevealAnimation = trigger('chunkRevealAnimation', [
+  transition(':enter', [
+    style({ opacity: 0, transform: 'translate3d(0,4px,0)', filter: 'blur(2px)' }),
+    animate(
+      '420ms cubic-bezier(0.22, 1, 0.36, 1)',
+      style({ opacity: 1, transform: 'translate3d(0,0,0)', filter: 'blur(0)' }),
+    ),
+  ]),
+]);
