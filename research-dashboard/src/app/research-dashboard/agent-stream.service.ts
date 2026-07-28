@@ -180,4 +180,12 @@ export class AgentStreamService implements OnDestroy {
       citationEdges: [],
     };
   }
+
+  connect(topic = 'Autonomous Multi-Agent Literature Synthesis'): void {
+    this.activeSubscription?.unsubscribe();
+    this.runningSubject.next(true);
+    this.activeSubscription = this.buildMockEvents(topic)
+      .pipe(tap((event) => this.eventsSubject.next(event)))
+      .subscribe({ complete: () => this.runningSubject.next(false) });
+  }
 }
