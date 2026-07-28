@@ -148,3 +148,6 @@ const LOG_TEMPLATES: Array<{ agentId: AgentId; level: LogLevel; message: string 
     message: '[Synthesizer] Draft synthesis complete, 812 words.',
   },
 ];
+
+let idCounter = 0;
+const nextId = (prefix: string) => `${prefix}-${Date.now()}-${idCounter++}`;
