@@ -151,3 +151,14 @@ const LOG_TEMPLATES: Array<{ agentId: AgentId; level: LogLevel; message: string 
 
 let idCounter = 0;
 const nextId = (prefix: string) => `${prefix}-${Date.now()}-${idCounter++}`;
+
+@Injectable({ providedIn: 'root' })
+export class AgentStreamService implements OnDestroy {
+  private readonly eventsSubject = new Subject<AgentStreamEvent>();
+  readonly events$: Observable<AgentStreamEvent> = this.eventsSubject.asObservable();
+
+  readonly project$: Observable<ResearchProject> = this.events$.pipe(
+    scan((project, event) => this.reduce(project, event), this.initialProject()),
+    shareReplay({ bufferSize: 1, refCount: false }),
+  );
+}
