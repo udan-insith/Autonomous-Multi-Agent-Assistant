@@ -107,3 +107,21 @@ export const edgeDraw = trigger('edgeDraw', [
     animate('520ms 80ms ease-out', style({ opacity: 0.5, strokeDashoffset: 0 })),
   ]),
 ]);
+
+export const panelEnter = trigger('panelEnter', [
+  transition(':enter', [
+    query(
+      '.panel-block',
+      [
+        style({ opacity: 0, transform: 'translate3d(0,18px,0)' }),
+        stagger('90ms', [
+          animate(
+            '520ms cubic-bezier(0.22, 1, 0.36, 1)',
+            style({ opacity: 1, transform: 'translate3d(0,0,0)' }),
+          ),
+        ]),
+      ],
+      { optional: true },
+    ),
+  ]),
+]);
