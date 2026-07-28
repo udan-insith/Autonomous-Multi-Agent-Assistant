@@ -57,3 +57,21 @@ export const checkmarkAnimation = trigger('checkmarkAnimation', [
     animate('160ms ease-in', style({ transform: 'translate3d(0,-8px,0) scale(0.8)', opacity: 0 })),
   ]),
 ]);
+
+export const listAnimation = trigger('listAnimation', [
+  transition('* => *', [
+    query(
+      ':enter',
+      [
+        style({ transform: 'translate3d(0,14px,0)', opacity: 0 }),
+        stagger('40ms', [
+          animate(
+            '320ms cubic-bezier(0.22, 1, 0.36, 1)',
+            style({ transform: 'translate3d(0,0,0)', opacity: 1 }),
+          ),
+        ]),
+      ],
+      { optional: true },
+    ),
+  ]),
+]);
