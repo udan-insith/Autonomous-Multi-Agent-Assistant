@@ -194,4 +194,36 @@ export class AgentStreamService implements OnDestroy {
     this.activeSubscription = null;
     this.runningSubject.next(false);
   }
+
+  private reduce(project: ResearchProject, event: AgentStreamEvent): ResearchProject {
+    switch (event.type) {
+      case 'agent-status':
+        return {
+          ...project,
+          agents: project.agents.map((a) =>
+            a.id === event.payload.agentId
+              ? {
+                  ...a,
+                  status: event.payload.status,
+                  progress: event.payload.progress,
+                  currentTask: event.payload.currentTask,
+                  updatedAt: Date.now(),
+                }
+              : a,
+          ),
+        };
+      case 'log':
+        return { ...project, logs: [...project.logs, event.payload].slice(-200) };
+      case 'synthesis-chunk':
+        return { ...project, synthesis: project.synthesis + event.payload.text };
+      case 'citation-node':
+        return { ...project, citationNodes: [...project.citationNodes, event.payload] };
+      case 'citation-edge':
+        return { ...project, citationEdges: [...project.citationEdges, event.payload] };
+      case 'run-complete':
+        return { ...project, status: 'completed' };
+      default:
+        return project;
+    }
+  }
 }
