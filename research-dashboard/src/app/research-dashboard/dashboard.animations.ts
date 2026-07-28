@@ -100,3 +100,10 @@ export const nodeDiscover = trigger('nodeDiscover', [
     ),
   ]),
 ]);
+
+export const edgeDraw = trigger('edgeDraw', [
+  transition(':enter', [
+    style({ opacity: 0, strokeDashoffset: 120 }),
+    animate('520ms 80ms ease-out', style({ opacity: 0.5, strokeDashoffset: 0 })),
+  ]),
+]);
