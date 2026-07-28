@@ -56,16 +56,95 @@ const AGENT_SEED: AgentState[] = [
   },
 ];
 
-const SYNTHESIS_SENTENCES:Array<{ text: string; heading: boolean }> = [
+const SYNTHESIS_SENTENCES: Array<{ text: string; heading: boolean }> = [
   { text: '## 1. Introduction', heading: true },
-  { text: 'Recent advances in retrieval-augmented generation have reframed how literature reviews are assembled. ', heading: false },
-  { text: 'Autonomous agent pipelines now decompose the task into query formulation, retrieval, evaluation, and synthesis. ', heading: false },
-  { text: 'This shift mirrors earlier moves from manual indexing toward embedding-based semantic search. ', heading: false },
+  {
+    text: 'Recent advances in retrieval-augmented generation have reframed how literature reviews are assembled. ',
+    heading: false,
+  },
+  {
+    text: 'Autonomous agent pipelines now decompose the task into query formulation, retrieval, evaluation, and synthesis. ',
+    heading: false,
+  },
+  {
+    text: 'This shift mirrors earlier moves from manual indexing toward embedding-based semantic search. ',
+    heading: false,
+  },
   { text: '## 2. Methodology Trends', heading: true },
-  { text: 'Across the corpus, vector-similarity retrieval is consistently paired with a cross-encoder re-ranking stage. ', heading: false },
-  { text: 'Several papers report diminishing returns beyond a context window of roughly forty retrieved passages. ', heading: false },
-  { text: 'Evaluator agents increasingly rely on rubric-based scoring rather than single scalar relevance. ', heading: false },
+  {
+    text: 'Across the corpus, vector-similarity retrieval is consistently paired with a cross-encoder re-ranking stage. ',
+    heading: false,
+  },
+  {
+    text: 'Several papers report diminishing returns beyond a context window of roughly forty retrieved passages. ',
+    heading: false,
+  },
+  {
+    text: 'Evaluator agents increasingly rely on rubric-based scoring rather than single scalar relevance. ',
+    heading: false,
+  },
   { text: '## 3. Open Questions', heading: true },
-  { text: 'Attribution fidelity — ensuring synthesized claims trace back to a specific source — remains only partially solved. ', heading: false },
-  { text: 'Multi-agent coordination overhead grows non-linearly once more than four specialized agents are introduced. ', heading: false },
+  {
+    text: 'Attribution fidelity — ensuring synthesized claims trace back to a specific source — remains only partially solved. ',
+    heading: false,
+  },
+  {
+    text: 'Multi-agent coordination overhead grows non-linearly once more than four specialized agents are introduced. ',
+    heading: false,
+  },
+];
+
+const LOG_TEMPLATES: Array<{ agentId: AgentId; level: LogLevel; message: string }> = [
+  {
+    agentId: 'query-optimizer',
+    level: 'info',
+    message: 'Expanding query with 6 semantically related terms…',
+  },
+  {
+    agentId: 'query-optimizer',
+    level: 'success',
+    message: 'Optimized query ready: "RAG literature synthesis agents 2024-2026"',
+  },
+  {
+    agentId: 'paper-fetcher',
+    level: 'info',
+    message: 'Querying arXiv, Semantic Scholar, and OpenAlex indices…',
+  },
+  {
+    agentId: 'paper-fetcher',
+    level: 'info',
+    message: 'Fetched batch of 24 candidate papers (page 1/3)…',
+  },
+  { agentId: 'paper-fetcher', level: 'success', message: 'Retrieved 71 candidate papers total.' },
+  {
+    agentId: 'evaluator',
+    level: 'info',
+    message: '[Evaluator] Computing embedding vectors for candidate set…',
+  },
+  {
+    agentId: 'evaluator',
+    level: 'info',
+    message: '[Evaluator] Vector distance matched at 0.89 for "Agentic Retrieval Pipelines"',
+  },
+  {
+    agentId: 'evaluator',
+    level: 'warning',
+    message: '[Evaluator] Low methodological score (0.31) — flagging for exclusion',
+  },
+  {
+    agentId: 'evaluator',
+    level: 'success',
+    message: '[Evaluator] 18 papers passed relevance threshold (>0.75)',
+  },
+  {
+    agentId: 'synthesizer',
+    level: 'info',
+    message: '[Synthesizer] Clustering evaluated sources into 3 thematic groups…',
+  },
+  { agentId: 'synthesizer', level: 'info', message: '[Synthesizer] Drafting section 2 of 3…' },
+  {
+    agentId: 'synthesizer',
+    level: 'success',
+    message: '[Synthesizer] Draft synthesis complete, 812 words.',
+  },
 ];
