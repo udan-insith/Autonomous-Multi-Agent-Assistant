@@ -188,4 +188,10 @@ export class AgentStreamService implements OnDestroy {
       .pipe(tap((event) => this.eventsSubject.next(event)))
       .subscribe({ complete: () => this.runningSubject.next(false) });
   }
+
+  disconnect(): void {
+    this.activeSubscription?.unsubscribe();
+    this.activeSubscription = null;
+    this.runningSubject.next(false);
+  }
 }
