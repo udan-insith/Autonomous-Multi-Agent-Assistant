@@ -161,4 +161,23 @@ export class AgentStreamService implements OnDestroy {
     scan((project, event) => this.reduce(project, event), this.initialProject()),
     shareReplay({ bufferSize: 1, refCount: false }),
   );
+
+  private readonly runningSubject = new BehaviorSubject<boolean>(false);
+  readonly isRunning$ = this.runningSubject.asObservable();
+
+  private activeSubscription: { unsubscribe: () => void } | null = null;
+
+  private initialProject(): ResearchProject {
+    return {
+      id: nextId('project'),
+      topic: 'Autonomous Multi-Agent Literature Synthesis',
+      startedAt: Date.now(),
+      status: 'running',
+      agents: AGENT_SEED.map((a) => ({ ...a })),
+      logs: [],
+      synthesis: '',
+      citationNodes: [],
+      citationEdges: [],
+    };
+  }
 }
