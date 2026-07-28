@@ -125,3 +125,13 @@ export const panelEnter = trigger('panelEnter', [
     ),
   ]),
 ]);
+
+export const dashboardAnimations = [
+  agentStateAnimation,
+  checkmarkAnimation,
+  listAnimation,
+  chunkRevealAnimation,
+  nodeDiscover,
+  edgeDraw,
+  panelEnter,
+];
