@@ -44,3 +44,16 @@ export const agentStateAnimation = trigger('agentStateAnimation', [
     ),
   ]),
 ]);
+
+export const checkmarkAnimation = trigger('checkmarkAnimation', [
+  transition(':enter', [
+    style({ transform: 'translate3d(0,-12px,0) scale(0.6)', opacity: 0 }),
+    animate(
+      '380ms 60ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+      style({ transform: 'translate3d(0,0,0) scale(1)', opacity: 1 }),
+    ),
+  ]),
+  transition(':leave', [
+    animate('160ms ease-in', style({ transform: 'translate3d(0,-8px,0) scale(0.8)', opacity: 0 })),
+  ]),
+]);
