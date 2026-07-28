@@ -226,4 +226,156 @@ export class AgentStreamService implements OnDestroy {
         return project;
     }
   }
+  private buildMockEvents(topic: string): Observable<AgentStreamEvent> {
+    const agentSequence: AgentId[] = [
+      'query-optimizer',
+      'paper-fetcher',
+      'evaluator',
+      'synthesizer',
+    ];
+    const steps: Array<Observable<AgentStreamEvent>> = [];
+
+    agentSequence.forEach((agentId, agentIndex) => {
+      const name = AGENT_SEED.find((a) => a.id === agentId)!.name;
+
+      steps.push(
+        of<AgentStreamEvent>({
+          type: 'agent-status',
+          payload: {
+            agentId,
+            status: 'working',
+            progress: 5,
+            currentTask: `Starting ${name.toLowerCase()} pass…`,
+          },
+        }).pipe(delay(agentIndex === 0 ? 400 : 200)),
+      );
+
+      const logsForAgent = LOG_TEMPLATES.filter((l) => l.agentId === agentId);
+      logsForAgent.forEach((tpl, i) => {
+        const progress = Math.round(((i + 1) / (logsForAgent.length + 1)) * 100);
+        steps.push(
+          of<AgentStreamEvent>({
+            type: 'log',
+            payload: {
+              id: nextId('log'),
+              agentId,
+              agentName: name,
+              level: tpl.level,
+              message: tpl.message,
+              timestamp: Date.now(),
+            },
+          }).pipe(delay(500 + Math.random() * 500)),
+        );
+        steps.push(
+          of<AgentStreamEvent>({
+            type: 'agent-status',
+            payload: {
+              agentId,
+              status: 'working',
+              progress,
+              currentTask: tpl.message.replace(/^\[.*?\]\s*/, ''),
+            },
+          }).pipe(delay(50)),
+        );
+      });
+
+      if (agentId === 'paper-fetcher') {
+        const nodeLabels = [
+          'Lewis et al. 2020',
+          'Shuster 2023',
+          'Agentic RAG 2025',
+          'Chen & Wu 2024',
+          'Multi-Agent Synth 2026',
+        ];
+        nodeLabels.forEach((label, i) => {
+          steps.push(
+            of<AgentStreamEvent>({
+              type: 'citation-node',
+              payload: {
+                id: nextId('node'),
+                label,
+                x: 0.5 + 0.35 * Math.cos((i / nodeLabels.length) * 2 * Math.PI),
+                y: 0.5 + 0.35 * Math.sin((i / nodeLabels.length) * 2 * Math.PI),
+                weight: 4 + Math.round(Math.random() * 20),
+                discoveredAt: Date.now(),
+              },
+            }).pipe(delay(350)),
+          );
+          if (i > 0) {
+            steps.push(
+              of<AgentStreamEvent>({
+                type: 'citation-edge',
+                payload: { id: nextId('edge'), source: 'root', target: nodeLabels[i] },
+              }).pipe(delay(50)),
+            );
+          }
+        });
+      }
+
+      if (agentId === 'synthesizer') {
+        SYNTHESIS_SENTENCES.forEach((chunk) => {
+          steps.push(
+            of<AgentStreamEvent>({
+              type: 'synthesis-chunk',
+              payload: {
+                id: nextId('chunk'),
+                text: chunk.text,
+                isHeading: chunk.heading,
+                timestamp: Date.now(),
+              },
+            }).pipe(delay(chunk.heading ? 600 : 260)),
+          );
+        });
+      }
+
+      steps.push(
+        of<AgentStreamEvent>({
+          type: 'agent-status',
+          payload: { agentId, status: 'completed', progress: 100, currentTask: 'Done.' },
+        }).pipe(delay(300)),
+      );
+    });
+
+    steps.push(
+      of<AgentStreamEvent>({ type: 'run-complete', payload: { completedAt: Date.now() } }).pipe(
+        delay(200),
+      ),
+    );
+
+    if (Math.random() < 0.35) {
+      steps.splice(
+        agentSequence.indexOf('evaluator') * 6 + 2,
+        0,
+        of<AgentStreamEvent>({
+          type: 'agent-status',
+          payload: {
+            agentId: 'evaluator',
+            status: 'failed',
+            progress: 40,
+            currentTask: 'Rate limit hit, retrying…',
+          },
+        }).pipe(delay(700)),
+        timer(900).pipe(
+          concatMap(() =>
+            of<AgentStreamEvent>({
+              type: 'agent-status',
+              payload: {
+                agentId: 'evaluator',
+                status: 'working',
+                progress: 45,
+                currentTask: 'Resumed after retry.',
+              },
+            }),
+          ),
+        ),
+      );
+    }
+
+    return concat(...steps);
+  }
+
+  ngOnDestroy(): void {
+    this.activeSubscription?.unsubscribe();
+    this.eventsSubject.complete();
+  }
 }
