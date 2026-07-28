@@ -85,3 +85,18 @@ export const chunkRevealAnimation = trigger('chunkRevealAnimation', [
     ),
   ]),
 ]);
+
+export const nodeDiscover = trigger('nodeDiscover', [
+  transition(':enter', [
+    style({ transform: 'scale(0)', opacity: 0 }),
+    animate(
+      '620ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+      keyframes([
+        style({ transform: 'scale(0)', opacity: 0, offset: 0 }),
+        style({ transform: 'scale(1.25)', opacity: 1, offset: 0.55 }),
+        style({ transform: 'scale(0.92)', opacity: 1, offset: 0.8 }),
+        style({ transform: 'scale(1)', opacity: 1, offset: 1 }),
+      ]),
+    ),
+  ]),
+]);
