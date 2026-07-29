@@ -150,4 +150,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const t = this.nodePx(target, size);
     return { x1: center.x, y1: center.y, x2: t.cx, y2: t.cy };
   }
+  logLevelClasses(level: AgentLog['level']): string {
+    switch (level) {
+      case 'success':
+        return 'text-emerald-400';
+      case 'warning':
+        return 'text-amber-400';
+      case 'error':
+        return 'text-rose-400';
+      default:
+        return 'text-violet-300';
+    }
+  }
 }
