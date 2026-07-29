@@ -139,4 +139,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   nodePx(node: CitationNode, size = 480): { cx: number; cy: number } {
     return { cx: node.x * size, cy: node.y * size };
   }
+  edgePoints(
+    edge: CitationEdge,
+    nodes: CitationNode[],
+    size = 480,
+  ): { x1: number; y1: number; x2: number; y2: number } | null {
+    const center = { x: size / 2, y: size / 2 };
+    const target = nodes.find((n) => n.label === edge.target);
+    if (!target) return null;
+    const t = this.nodePx(target, size);
+    return { x1: center.x, y1: center.y, x2: t.cx, y2: t.cy };
+  }
 }
