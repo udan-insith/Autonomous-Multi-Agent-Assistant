@@ -124,4 +124,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return LucideSparkles.icon;
     }
   }
+  statusLabel(status: AgentState['status']): string {
+    switch (status) {
+      case 'idle':
+        return 'Idle';
+      case 'working':
+        return 'Working';
+      case 'completed':
+        return 'Completed';
+      case 'failed':
+        return 'Retrying';
+    }
+  }
 }
