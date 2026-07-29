@@ -162,4 +162,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return 'text-violet-300';
     }
   }
+  trackAgent: TrackByFunction<AgentState> = (_, a) => a.id;
+  trackLog: TrackByFunction<AgentLog> = (_, l) => l.id;
+  trackNode: TrackByFunction<CitationNode> = (_, n) => n.id;
+  trackEdge: TrackByFunction<CitationEdge> = (_, e) => e.id;
+  trackBlock: TrackByFunction<SynthesisBlock> = (_, b) => b.id;
 }
