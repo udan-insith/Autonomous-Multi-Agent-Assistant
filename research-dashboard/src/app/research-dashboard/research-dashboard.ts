@@ -99,4 +99,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.synthesisBlocks = [];
     this.stream.connect('Autonomous Multi-Agent Literature Synthesis');
   }
+  private toBlocks(raw: string): SynthesisBlock[] {
+    return raw
+      .split(/(?=## )/g)
+      .filter((s) => s.trim().length > 0)
+      .map((segment, i) => {
+        const isHeading = segment.trim().startsWith('## ');
+        return {
+          id: `block-${i}`,
+          isHeading,
+          text: isHeading ? segment.replace(/^##\s*/, '').trim() : segment.trim(),
+        };
+      });
 }
