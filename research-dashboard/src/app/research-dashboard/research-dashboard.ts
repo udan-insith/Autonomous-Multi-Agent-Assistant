@@ -34,3 +34,9 @@ import {
   CitationNode,
   ResearchProject,
 } from './research-interfaces';
+
+interface SynthesisBlock {
+  id: string;
+  isHeading: boolean;
+  text: string;
+}
