@@ -136,4 +136,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return 'Retrying';
     }
   }
+  nodePx(node: CitationNode, size = 480): { cx: number; cy: number } {
+    return { cx: node.x * size, cy: node.y * size };
+  }
 }
