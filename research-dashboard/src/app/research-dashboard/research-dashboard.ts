@@ -88,4 +88,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }),
     );
   }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+    this.stream.disconnect();
+  }
+
+  restartRun(): void {
+    this.synthesisCache = '';
+    this.synthesisBlocks = [];
+    this.stream.connect('Autonomous Multi-Agent Literature Synthesis');
+  }
 }
