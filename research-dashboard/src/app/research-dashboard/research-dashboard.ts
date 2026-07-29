@@ -111,4 +111,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
           text: isHeading ? segment.replace(/^##\s*/, '').trim() : segment.trim(),
         };
       });
+  }
+  iconFor(agent: AgentState): LucideIconData {
+    switch (agent.id) {
+      case 'query-optimizer':
+        return LucideSearch.icon;
+      case 'paper-fetcher':
+        return LucideDownloadCloud.icon;
+      case 'evaluator':
+        return LucideScale.icon;
+      case 'synthesizer':
+        return LucideSparkles.icon;
+    }
+  }
 }
