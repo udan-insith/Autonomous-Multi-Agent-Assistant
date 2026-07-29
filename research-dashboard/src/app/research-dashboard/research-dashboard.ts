@@ -59,3 +59,15 @@ interface SynthesisBlock {
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: dashboardAnimations,
 })
+export class DashboardComponent implements OnInit, OnDestroy {
+  private readonly stream = inject(AgentStreamService);
+  private readonly platformId = inject(PLATFORM_ID);
+
+  readonly project$: Observable<ResearchProject> = this.stream.project$;
+  readonly isRunning$: Observable<boolean> = this.stream.isRunning$;
+
+  private synthesisCache = '';
+  synthesisBlocks: SynthesisBlock[] = [];
+
+  private sub = new Subscription();
+}
