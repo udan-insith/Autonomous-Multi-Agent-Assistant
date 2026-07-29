@@ -40,3 +40,22 @@ interface SynthesisBlock {
   isHeading: boolean;
   text: string;
 }
+
+@Component({
+  selector: 'app-research-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    LucideDynamicIcon,
+    LucideCheckCircle2,
+    LucideXCircle,
+    LucideLoader2,
+    LucideRadio,
+    LucideNetwork,
+    LucideBookOpen,
+    LucideRotateCcw,
+  ],
+  templateUrl: './research-dashboard.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: dashboardAnimations,
+})
