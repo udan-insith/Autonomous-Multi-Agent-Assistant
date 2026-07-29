@@ -70,4 +70,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   synthesisBlocks: SynthesisBlock[] = [];
 
   private sub = new Subscription();
+
+  ngOnInit(): void {
+    // SSR guard: skip starting timers on the server render pass.
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this.stream.connect('Autonomous Multi-Agent Literature Synthesis');
+
+    this.sub.add(
+      this.project$.subscribe((project) => {
+        if (project.synthesis !== this.synthesisCache) {
+          this.synthesisCache = project.synthesis;
+          this.synthesisBlocks = this.toBlocks(project.synthesis);
+        }
+      }),
+    );
+  }
 }
