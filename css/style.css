@@ -95,3 +95,29 @@ body {
   border-color: rgba(16, 185, 129, 0.3);
   background: rgba(16, 185, 129, 0.08);
 }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--emerald-glow);
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--emerald);
+}
+.status-pill.done {
+  color: var(--violet);
+  background: rgba(167, 139, 250, 0.1);
+  border-color: var(--violet-glow);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: softPulse 1.6s ease-in-out infinite;
+}
