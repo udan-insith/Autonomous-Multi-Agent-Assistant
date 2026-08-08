@@ -30,3 +30,18 @@ body {
 .mono {
   font-family: "JetBrains Mono", "Courier New", monospace;
 }
+
+/* LAYOUT */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: rgba(10, 14, 23, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
