@@ -197,3 +197,125 @@ main {
 }
 
 /* AGENT GRID STYLES */
+.agent-grid {
+  grid-column: span 12;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 900px) {
+  .agent-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .agent-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.agent-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(19, 26, 41, 0.7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  backdrop-filter: blur(6px);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agent-card.status-working {
+  border-color: rgba(16, 185, 129, 0.4);
+  animation: kickScale 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agent-card.status-completed {
+  border-color: rgba(16, 185, 129, 0.5);
+  background: rgba(16, 185, 129, 0.04);
+  box-shadow: 0 0 24px var(--emerald-glow);
+}
+.agent-card.status-failed {
+  border-color: rgba(244, 63, 94, 0.5);
+  background: rgba(244, 63, 94, 0.04);
+  box-shadow: 0 0 24px rgba(244, 63, 94, 0.25);
+  animation: shake 520ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+.agent-glow-ring {
+  position: absolute;
+  inset: -30px;
+  pointer-events: none;
+  opacity: 0.4;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    rgba(16, 185, 129, 0.55),
+    transparent 30%
+  );
+  animation: glowRotate 2.6s linear infinite;
+}
+
+.agent-card-head {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.agent-id {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.agent-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(100, 116, 139, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-dim);
+  transition: all 0.3s ease;
+}
+.agent-card.status-working .agent-icon,
+.agent-card.status-completed .agent-icon {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--emerald);
+}
+.agent-card.status-failed .agent-icon {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: var(--rose);
+}
+.agent-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  margin: 0;
+}
+.agent-role {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin: 2px 0 0;
+}
+
+.agent-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--emerald);
+  animation: checkDrop 380ms 60ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.agent-badge.fail {
+  background: rgba(244, 63, 94, 0.2);
+  color: var(--rose);
+  animation: none;
+}
