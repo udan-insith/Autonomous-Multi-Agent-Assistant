@@ -319,3 +319,48 @@ main {
   color: var(--rose);
   animation: none;
 }
+
+.spinner {
+  animation: spin 0.9s linear infinite;
+  color: var(--emerald);
+}
+
+.agent-task {
+  position: relative;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin: 12px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.progress-track {
+  position: relative;
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--emerald), #34d399);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.agent-card.status-failed .progress-fill {
+  background: var(--rose);
+}
+.agent-card.status-idle .progress-fill {
+  background: #475569;
+}
+
+.agent-meta {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--text-dim);
+  margin-top: 6px;
+}
