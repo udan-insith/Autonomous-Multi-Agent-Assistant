@@ -443,3 +443,51 @@ main {
 .log-empty {
   color: var(--text-dim);
 }
+
+/* REVIEW PANEL */
+.review-panel {
+  grid-column: span 7;
+  height: 476px;
+  overflow-y: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(19, 26, 41, 0.4);
+  padding: 24px;
+}
+@media (max-width: 1100px) {
+  .review-panel {
+    grid-column: span 12;
+  }
+}
+
+.review-panel h3 {
+  color: var(--emerald);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 20px 0 8px;
+  animation: chunkReveal 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.review-panel h3:first-child {
+  margin-top: 0;
+}
+.review-panel p {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #cbd5e1;
+  margin: 0 0 8px;
+  animation: chunkReveal 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.review-empty {
+  color: var(--text-dim);
+  font-size: 13.5px;
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: var(--emerald);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: softPulse 1s ease-in-out infinite;
+}
