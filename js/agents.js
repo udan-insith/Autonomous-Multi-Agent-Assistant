@@ -124,5 +124,63 @@ class AgentPipeline {
       task: "Done.",
     });
     await this.sleep(300);
+
+    // STAGE 3
+    this.emit({
+      type: "agent-status",
+      agentId: "evaluator",
+      status: "working",
+      progress: 10,
+      task: "Training relevance-scoring network…",
+    });
+    await this.sleep(400);
+
+    const history = this.evaluator.train(500);
+    this.emit({
+      type: "log",
+      agentId: "evaluator",
+      level: "info",
+      message: `Trained feedforward NN: MSE ${history[0].toFixed(3)} → ${history[history.length - 1].toFixed(4)} over ${history.length} epochs.`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "evaluator",
+      status: "working",
+      progress: 50,
+      task: "Scoring candidates…",
+    });
+    await this.sleep(500);
+
+    const evaluated = this.evaluator.evaluate(
+      searchResults,
+      tokenize(opt.optimizedQuery),
+    );
+    evaluated.sort((a, b) => b.relevance - a.relevance);
+
+    for (const e of evaluated.slice(0, 3)) {
+      this.emit({
+        type: "log",
+        agentId: "evaluator",
+        level: e.relevance > 0.5 ? "success" : "warning",
+        message: `Vector distance matched at ${e.relevance.toFixed(2)} for "${e.doc.title}"`,
+      });
+      await this.sleep(220);
+    }
+
+    const passed = evaluated.filter((e) => e.relevance >= 0.3).length;
+    this.emit({
+      type: "log",
+      agentId: "evaluator",
+      level: "success",
+      message: `${passed} papers passed relevance threshold (>0.30).`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "evaluator",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(300);
   }
 }
