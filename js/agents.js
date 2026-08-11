@@ -10,4 +10,21 @@ class AgentPipeline {
   on(callback) {
     this.listeners.push(callback);
   }
+
+  emit(event) {
+    for (const cb of this.listeners) cb(event);
+  }
+
+  sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async run(rawQuery) {
+    if (this.running) return;
+    this.running = true;
+
+    this.emit({ type: "run-start", query: rawQuery });
+
+    // STAGE !
+  }
 }
