@@ -26,5 +26,21 @@ class AgentPipeline {
     this.emit({ type: "run-start", query: rawQuery });
 
     // STAGE !
+    this.emit({
+      type: "agent-status",
+      agentId: "query-optimizer",
+      status: "working",
+      progress: 10,
+      task: "Tokenizing query…",
+    });
+    await this.sleep(500);
+
+    const opt = optimizeQuery(rwaQuery);
+    this.emit({
+      type: "log",
+      agentId: "query-optimizer",
+      level: "info",
+      message: `Expanded query with ${opt.expansionTerms.length} related term(s): ${opt.expansionTerms.join(", ") || "(none found)"}`,
+    });
   }
 }
