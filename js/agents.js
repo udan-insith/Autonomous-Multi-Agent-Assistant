@@ -182,5 +182,53 @@ class AgentPipeline {
       task: "Done.",
     });
     await this.sleep(300);
+
+    // STAGE 4
+    this.emit({
+      type: "agent-status",
+      agentId: "synthesizer",
+      status: "working",
+      progress: 10,
+      task: "Extracting key sentences…",
+    });
+    await this.sleep(500);
+
+    const { sections } = this.synthesizer.synthesize(
+      evaluated,
+      tokenize(opt.optimizedQuery),
+    );
+
+    for (const section of sections) {
+      this.emit({
+        type: "synthesis-chunk",
+        heading: section.heading,
+        text: section.body,
+      });
+      this.emit({
+        type: "log",
+        agentId: "synthesizer",
+        level: "info",
+        message: `Drafted section: "${section.heading}"`,
+      });
+      await this.sleep(650);
+    }
+
+    this.emit({
+      type: "log",
+      agentId: "synthesizer",
+      level: "success",
+      message: `Synthesis complete: ${sections.length} sections.`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "synthesizer",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(200);
+
+    this.emit({ type: "run-complete" });
+    this.running = false;
   }
 }
