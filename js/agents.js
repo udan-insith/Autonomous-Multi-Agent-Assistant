@@ -42,5 +42,28 @@ class AgentPipeline {
       level: "info",
       message: `Expanded query with ${opt.expansionTerms.length} related term(s): ${opt.expansionTerms.join(", ") || "(none found)"}`,
     });
+    this.emit({
+      type: "agent-status",
+      agentId: "query-optimizer",
+      status: "working",
+      progress: 70,
+      task: "Building optimized query…",
+    });
+    await this.sleep(600);
+
+    this.emit({
+      type: "log",
+      agentId: "query-optimizer",
+      level: "success",
+      message: `Optimized query ready: "${opt.optimizedQuery}"`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "query-optimizer",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(300);
   }
 }
