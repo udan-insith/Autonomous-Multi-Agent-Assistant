@@ -491,3 +491,290 @@ main {
   vertical-align: middle;
   animation: softPulse 1s ease-in-out infinite;
 }
+
+/* Citation Graph */
+.graph-panel {
+  grid-column: span 12;
+  display: flex;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(6, 9, 16, 0.5);
+  padding: 16px;
+}
+.graph-panel svg {
+  width: 100%;
+  max-width: 560px;
+  height: 440px;
+}
+.graph-node circle {
+  animation: nodeDiscover 620ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.graph-node text {
+  fill: #94a3b8;
+  font-size: 7px;
+}
+.graph-edge {
+  stroke: rgba(139, 92, 246, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  animation: edgeDraw 520ms ease-out both;
+}
+
+/* ---------- To-do page ---------- */
+.todo-shell {
+  grid-column: span 12;
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
+.todo-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.todo-input-row input {
+  flex: 1;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+.todo-input-row input:focus {
+  outline: none;
+  border-color: var(--emerald-glow);
+}
+.todo-input-row button {
+  background: linear-gradient(135deg, var(--emerald), #059669);
+  border: none;
+  color: #04120c;
+  font-weight: 600;
+  padding: 0 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  animation: logIn 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.todo-item.leaving {
+  animation: todoLeave 220ms ease-in forwards;
+}
+.todo-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: transparent;
+  transition: all 0.2s ease;
+}
+.todo-check.checked {
+  background: var(--emerald);
+  border-color: var(--emerald);
+  color: #04120c;
+}
+.todo-text {
+  flex: 1;
+  font-size: 14px;
+}
+.todo-text.done {
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+.todo-delete {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+}
+.todo-delete:hover {
+  color: var(--rose);
+}
+.todo-empty {
+  color: var(--text-dim);
+  font-size: 13.5px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes glowRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes softPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes kickScale {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes shake {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  15% {
+    transform: translate3d(-6px, 0, 0);
+  }
+  30% {
+    transform: translate3d(5px, 0, 0);
+  }
+  45% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+  75% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  90% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+@keyframes checkDrop {
+  from {
+    transform: translate3d(0, -12px, 0) scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes logIn {
+  from {
+    transform: translate3d(0, 14px, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes chunkReveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 4px, 0);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+@keyframes nodeDiscover {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.92);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes edgeDraw {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+@keyframes todoLeave {
+  to {
+    opacity: 0;
+    transform: translate3d(-16px, 0, 0);
+  }
+}
+@keyframes panelIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.panel-block,
+.agent-grid,
+.terminal,
+.review-panel,
+.graph-panel,
+.search-bar,
+.todo-shell {
+  animation: panelIn 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.35);
+  border-radius: 999px;
+}
