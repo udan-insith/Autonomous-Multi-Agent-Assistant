@@ -65,5 +65,170 @@ class AgentPipeline {
       task: "Done.",
     });
     await this.sleep(300);
+
+    // STAGE 2
+    this.emit({
+      type: "agent-status",
+      agentId: "paper-fetcher",
+      status: "working",
+      progress: 10,
+      task: "Searching offline corpus (TF-IDF)…",
+    });
+    await this.sleep(500);
+
+    const searchResults = this.tfidfIndex.search(opt.optimizedQuery, 12);
+    this.emit({
+      type: "log",
+      agentId: "paper-fetcher",
+      level: "info",
+      message: `Scanned ${CORPUS.length} indexed papers…`,
+    });
+    await this.sleep(400);
+
+    const angleStep = (2 * Math.PI) / Math.max(1, searchResults.length);
+    for (let i = 0; i < searchResults.length; i++) {
+      const r = searchResults[i];
+      this.emit({
+        type: "citation-node",
+        node: {
+          id: r.doc.id,
+          label:
+            r.doc.title.length > 28
+              ? r.doc.title.slice(0, 26) + "…"
+              : r.doc.title,
+          x: 0.5 + 0.36 * Math.cos(i * angleStep),
+          y: 0.5 + 0.36 * Math.sin(i * angleStep),
+          weight: Math.round(r.score * 100),
+        },
+      });
+      if (i > 0) {
+        this.emit({
+          type: "citation-edge",
+          edge: { id: `e-${r.doc.id}`, target: r.doc.id },
+        });
+      }
+      await this.sleep(90);
+    }
+
+    this.emit({
+      type: "log",
+      agentId: "paper-fetcher",
+      level: "success",
+      message: `Retrieved ${searchResults.length} candidate papers via TF-IDF cosine similarity.`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "paper-fetcher",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(300);
+
+    // STAGE 3
+    this.emit({
+      type: "agent-status",
+      agentId: "evaluator",
+      status: "working",
+      progress: 10,
+      task: "Training relevance-scoring network…",
+    });
+    await this.sleep(400);
+
+    const history = this.evaluator.train(500);
+    this.emit({
+      type: "log",
+      agentId: "evaluator",
+      level: "info",
+      message: `Trained feedforward NN: MSE ${history[0].toFixed(3)} → ${history[history.length - 1].toFixed(4)} over ${history.length} epochs.`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "evaluator",
+      status: "working",
+      progress: 50,
+      task: "Scoring candidates…",
+    });
+    await this.sleep(500);
+
+    const evaluated = this.evaluator.evaluate(
+      searchResults,
+      tokenize(opt.optimizedQuery),
+    );
+    evaluated.sort((a, b) => b.relevance - a.relevance);
+
+    for (const e of evaluated.slice(0, 3)) {
+      this.emit({
+        type: "log",
+        agentId: "evaluator",
+        level: e.relevance > 0.5 ? "success" : "warning",
+        message: `Vector distance matched at ${e.relevance.toFixed(2)} for "${e.doc.title}"`,
+      });
+      await this.sleep(220);
+    }
+
+    const passed = evaluated.filter((e) => e.relevance >= 0.3).length;
+    this.emit({
+      type: "log",
+      agentId: "evaluator",
+      level: "success",
+      message: `${passed} papers passed relevance threshold (>0.30).`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "evaluator",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(300);
+
+    // STAGE 4
+    this.emit({
+      type: "agent-status",
+      agentId: "synthesizer",
+      status: "working",
+      progress: 10,
+      task: "Extracting key sentences…",
+    });
+    await this.sleep(500);
+
+    const { sections } = this.synthesizer.synthesize(
+      evaluated,
+      tokenize(opt.optimizedQuery),
+    );
+
+    for (const section of sections) {
+      this.emit({
+        type: "synthesis-chunk",
+        heading: section.heading,
+        text: section.body,
+      });
+      this.emit({
+        type: "log",
+        agentId: "synthesizer",
+        level: "info",
+        message: `Drafted section: "${section.heading}"`,
+      });
+      await this.sleep(650);
+    }
+
+    this.emit({
+      type: "log",
+      agentId: "synthesizer",
+      level: "success",
+      message: `Synthesis complete: ${sections.length} sections.`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "synthesizer",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(200);
+
+    this.emit({ type: "run-complete" });
+    this.running = false;
   }
 }
