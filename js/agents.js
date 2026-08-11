@@ -65,5 +65,64 @@ class AgentPipeline {
       task: "Done.",
     });
     await this.sleep(300);
+
+    // STAGE 2
+    this.emit({
+      type: "agent-status",
+      agentId: "paper-fetcher",
+      status: "working",
+      progress: 10,
+      task: "Searching offline corpus (TF-IDF)…",
+    });
+    await this.sleep(500);
+
+    const searchResults = this.tfidfIndex.search(opt.optimizedQuery, 12);
+    this.emit({
+      type: "log",
+      agentId: "paper-fetcher",
+      level: "info",
+      message: `Scanned ${CORPUS.length} indexed papers…`,
+    });
+    await this.sleep(400);
+
+    const angleStep = (2 * Math.PI) / Math.max(1, searchResults.length);
+    for (let i = 0; i < searchResults.length; i++) {
+      const r = searchResults[i];
+      this.emit({
+        type: "citation-node",
+        node: {
+          id: r.doc.id,
+          label:
+            r.doc.title.length > 28
+              ? r.doc.title.slice(0, 26) + "…"
+              : r.doc.title,
+          x: 0.5 + 0.36 * Math.cos(i * angleStep),
+          y: 0.5 + 0.36 * Math.sin(i * angleStep),
+          weight: Math.round(r.score * 100),
+        },
+      });
+      if (i > 0) {
+        this.emit({
+          type: "citation-edge",
+          edge: { id: `e-${r.doc.id}`, target: r.doc.id },
+        });
+      }
+      await this.sleep(90);
+    }
+
+    this.emit({
+      type: "log",
+      agentId: "paper-fetcher",
+      level: "success",
+      message: `Retrieved ${searchResults.length} candidate papers via TF-IDF cosine similarity.`,
+    });
+    this.emit({
+      type: "agent-status",
+      agentId: "paper-fetcher",
+      status: "completed",
+      progress: 100,
+      task: "Done.",
+    });
+    await this.sleep(300);
   }
 }
