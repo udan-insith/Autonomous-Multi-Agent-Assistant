@@ -491,3 +491,131 @@ main {
   vertical-align: middle;
   animation: softPulse 1s ease-in-out infinite;
 }
+
+/* Citation Graph */
+.graph-panel {
+  grid-column: span 12;
+  display: flex;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(6, 9, 16, 0.5);
+  padding: 16px;
+}
+.graph-panel svg {
+  width: 100%;
+  max-width: 560px;
+  height: 440px;
+}
+.graph-node circle {
+  animation: nodeDiscover 620ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.graph-node text {
+  fill: #94a3b8;
+  font-size: 7px;
+}
+.graph-edge {
+  stroke: rgba(139, 92, 246, 0.45);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  animation: edgeDraw 520ms ease-out both;
+}
+
+/* ---------- To-do page ---------- */
+.todo-shell {
+  grid-column: span 12;
+  max-width: 720px;
+  margin: 0 auto;
+  width: 100%;
+}
+.todo-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.todo-input-row input {
+  flex: 1;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+}
+.todo-input-row input:focus {
+  outline: none;
+  border-color: var(--emerald-glow);
+}
+.todo-input-row button {
+  background: linear-gradient(135deg, var(--emerald), #059669);
+  border: none;
+  color: #04120c;
+  font-weight: 600;
+  padding: 0 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  animation: logIn 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.todo-item.leaving {
+  animation: todoLeave 220ms ease-in forwards;
+}
+.todo-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: transparent;
+  transition: all 0.2s ease;
+}
+.todo-check.checked {
+  background: var(--emerald);
+  border-color: var(--emerald);
+  color: #04120c;
+}
+.todo-text {
+  flex: 1;
+  font-size: 14px;
+}
+.todo-text.done {
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+.todo-delete {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: color 0.2s ease;
+}
+.todo-delete:hover {
+  color: var(--rose);
+}
+.todo-empty {
+  color: var(--text-dim);
+  font-size: 13.5px;
+  text-align: center;
+  padding: 40px 0;
+}
